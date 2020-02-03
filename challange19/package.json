@@ -1,0 +1,16 @@
+{
+  "name": "challange19-json-bread",
+  "version": "1.0.0",
+  "description": "learning bread using express and bootstrap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Piscki Pratama <pisckipratama@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1"
+  }
+}

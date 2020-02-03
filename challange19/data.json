@@ -1,0 +1,22 @@
+[{
+    "id": 1,
+    "string": "Aku hebat",
+    "integer": 100,
+    "float": 1.89,
+    "date": "23 Februari 2020",
+    "booelan": true
+}, {
+    "id": 2,
+    "string": "Kamu hebat",
+    "integer": 200,
+    "float": 1.83,
+    "date": "24 Februari 2020",
+    "booelan": true
+}, {
+    "id": 3,
+    "string": "Kita hebat",
+    "integer": 300,
+    "float": 1.81,
+    "date": "25 Februari 2020",
+    "booelan": false
+}]
