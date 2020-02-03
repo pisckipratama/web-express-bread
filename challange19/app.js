@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 // create /add route
 app.get('/add', (req, res) => res.render('add'));
 app.post('/add', (req, res) => {
+    console.log(req.body.string);
     data.push({
         id: data.length + 1,
         string: req.body.string,
@@ -39,7 +40,27 @@ app.post('/add', (req, res) => {
 })
 
 // create /edit route
-app.get('/edit', (req, res) => res.render('edit'));
+app.get('/edit/:id', (req, res) => {
+    let query = req.params.id;
+    res.render('edit', {
+        data: data,
+        query: query
+    });
+});
+
+app.post('/edit/:id', (req, res) => {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id == req.params.id) {
+            data[i].string = req.body.string;
+            data[i].integer = req.body.integer;
+            data[i].float = req.body.float;
+            data[i].date = req.body.date;
+            data[i].boolean = req.body.boolean;
+        }
+    }
+    fs.writeFileSync('data.json', JSON.stringify(data, null, 3));
+    res.redirect('/');
+})
 
 app.listen(3000, () => {
     console.log(`running at http://localhost:3000`);

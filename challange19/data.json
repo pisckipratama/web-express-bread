@@ -1,26 +1,50 @@
 [
    {
       "id": 1,
-      "string": "hari senin",
+      "string": "monday",
       "integer": "100",
       "float": "1.01",
       "date": "2020-02-03",
-      "boolean": "false"
-   },
-   {
-      "id": 2,
-      "string": "hari selasa",
-      "integer": "200",
-      "float": "1.02",
-      "date": "2020-02-04",
       "boolean": "true"
    },
    {
-      "id": 3,
-      "string": "hari rabu",
-      "integer": "300",
-      "float": "1.03",
-      "date": "2020-02-05",
+      "id": 2,
+      "string": "tuesday",
+      "integer": "201",
+      "float": "1.021",
+      "date": "2020-02-08",
       "boolean": "false"
+   },
+   {
+      "id": 3,
+      "string": "wednesday",
+      "integer": "300",
+      "float": "1.02",
+      "date": "2020-02-05",
+      "boolean": "true"
+   },
+   {
+      "id": 4,
+      "string": "hari kamis",
+      "integer": "400",
+      "float": "1.04",
+      "date": "2020-02-06",
+      "boolean": "true"
+   },
+   {
+      "id": 5,
+      "string": "mencapai target",
+      "integer": "800",
+      "float": "1.07",
+      "date": "2020-02-25",
+      "boolean": "true"
+   },
+   {
+      "id": 6,
+      "string": "belajar backend",
+      "integer": "900",
+      "float": "20.1",
+      "date": "2020-02-06",
+      "boolean": "true"
    }
 ]
