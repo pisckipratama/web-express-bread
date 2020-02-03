@@ -4,7 +4,7 @@
     "integer": 100,
     "float": 1.89,
     "date": "23 Februari 2020",
-    "booelan": true
+    "booelan": false
 }, {
     "id": 2,
     "string": "Kamu hebat",
@@ -19,4 +19,11 @@
     "float": 1.81,
     "date": "25 Februari 2020",
     "booelan": false
+}, {
+    "id": 4,
+    "string": "Kami hebat",
+    "integer": 400,
+    "float": 1.87,
+    "date": "26 Februari 2020",
+    "booelan": true
 }]
