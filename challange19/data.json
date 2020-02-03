@@ -1,58 +1,26 @@
 [
    {
       "id": 1,
-      "string": "Aku hebat",
-      "integer": 100,
-      "float": 1.89,
-      "date": "23/02/2020",
+      "string": "hari senin",
+      "integer": "100",
+      "float": "1.01",
+      "date": "2020-02-03",
       "boolean": "false"
    },
    {
       "id": 2,
-      "string": "Kamu hebat",
-      "integer": 200,
-      "float": 1.83,
-      "date": "24/02/2020",
+      "string": "hari selasa",
+      "integer": "200",
+      "float": "1.02",
+      "date": "2020-02-04",
       "boolean": "true"
    },
    {
       "id": 3,
-      "string": "Kita hebat",
-      "integer": 300,
-      "float": 1.81,
-      "date": "25/02/2020",
+      "string": "hari rabu",
+      "integer": "300",
+      "float": "1.03",
+      "date": "2020-02-05",
       "boolean": "false"
-   },
-   {
-      "id": 4,
-      "string": "Kami hebat",
-      "integer": 400,
-      "float": 1.87,
-      "date": "26/02/2020",
-      "boolean": "true"
-   },
-   {
-      "id": 5,
-      "string": "created with heart and love",
-      "integer": "500",
-      "float": "1.87",
-      "date": "20/02/2020",
-      "boolean": "true"
-   },
-   {
-      "id": 6,
-      "string": "piscki pratama",
-      "integer": "600",
-      "float": "1.88",
-      "date": "27/02/2020",
-      "boolean": "false"
-   },
-   {
-      "id": 7,
-      "string": "programmer sayati",
-      "integer": "700",
-      "float": "1.86",
-      "date": "28/02/2020",
-      "boolean": "true"
    }
 ]

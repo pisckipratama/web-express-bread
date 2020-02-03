@@ -35,7 +35,7 @@ app.post('/add', (req, res) => {
         boolean: req.body.boolean
     });
     fs.writeFileSync('data.json', JSON.stringify(data, null, 3));
-    res.redirect('/add');
+    res.redirect('/');
 })
 
 // create /edit route
