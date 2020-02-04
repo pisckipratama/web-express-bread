@@ -80,15 +80,15 @@
             <tbody>
                 <% for (let i = 0; i < data.length; i++) { %>
                 <tr>
-                    <th scope="row"><%= i + 1 %></th>
-                    <td><%= data[i].string %></td>
-                    <td><%= data[i].integer %></td>
-                    <td><%= data[i].float %></td>
+                    <th scope="row"><%= data[i].id %></th>
+                    <td><%= data[i].string ? data[i].string : 'kosong' %></td>
+                    <td><%= data[i].integer ? data[i].integer : 'kosong' %></td>
+                    <td><%= data[i].float ? data[i].float : 'kosong' %></td>
                     <td><%= data[i].date ? data[i].date : 'kosong' %></td>
-                    <td><%= data[i].boolean === "Choose the Boolean" ? "kosong" : data[i].boolean %></td>
+                    <td><%= data[i].boolean %></td>
                     <td>
                         <a class="btn btn-success btn-sm" href="/edit/<%= data[i].id %>" role="button">Edit</a>
-                        <a class="btn btn-danger btn-sm" href="/edit/<%= data[i].id %>" role="button">Delete</a>
+                        <a class="btn btn-danger btn-sm" href="/delete/<%= data[i].id %>" role="button">Delete</a>
                     </td>
                 </tr>
                 <% } %>

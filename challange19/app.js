@@ -26,14 +26,13 @@ app.get('/', (req, res) => {
 // create /add route
 app.get('/add', (req, res) => res.render('add'));
 app.post('/add', (req, res) => {
-    console.log(req.body.string);
     data.push({
-        id: data.length + 1,
+        id: data[data.length - 1].hasOwnProperty('id') ? data[data.length - 1].id + 1 : 1,
         string: req.body.string,
         integer: req.body.integer,
         float: req.body.float,
         date: req.body.date,
-        boolean: req.body.boolean
+        boolean: (req.body.boolean == 'true')
     });
     fs.writeFileSync('data.json', JSON.stringify(data, null, 3));
     res.redirect('/');
@@ -42,9 +41,12 @@ app.post('/add', (req, res) => {
 // create /edit route
 app.get('/edit/:id', (req, res) => {
     let query = req.params.id;
+    let filter = data.filter(data => data.id === parseInt(req.params.id));
+    let result = filter[0];
     res.render('edit', {
         data: data,
-        query: query
+        query: query,
+        result: result
     });
 });
 
@@ -55,9 +57,16 @@ app.post('/edit/:id', (req, res) => {
             data[i].integer = req.body.integer;
             data[i].float = req.body.float;
             data[i].date = req.body.date;
-            data[i].boolean = req.body.boolean;
+            data[i].boolean = (req.body.boolean == 'true');
         }
     }
+    fs.writeFileSync('data.json', JSON.stringify(data, null, 3));
+    res.redirect('/');
+})
+
+app.get('/delete/:id', (req, res) => {
+    let result = data.filter(data => data.id !== parseInt(req.params.id));
+    data = result;
     fs.writeFileSync('data.json', JSON.stringify(data, null, 3));
     res.redirect('/');
 })
