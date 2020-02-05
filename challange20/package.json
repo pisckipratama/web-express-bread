@@ -1,0 +1,18 @@
+{
+  "name": "challange20-sqlite3-bread",
+  "version": "1.0.0",
+  "description": "Learn bread using sqlite3",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Piscki Pratama <pisckipratama@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "sqlite3": "^4.1.1"
+  }
+}
