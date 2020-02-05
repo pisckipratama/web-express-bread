@@ -74,7 +74,7 @@
                 <td><%= data.boolean ? true : false %></td>
                 <td>
                     <a class="btn btn-success btn-sm" href="/edit/<%= data.id %>" role="button">Edit</a>
-                    <a class="btn btn-danger btn-sm" href="/delete" role="button">Delete</a>
+                    <a class="btn btn-danger btn-sm" href="/delete/<%= data.id %>" role="button">Delete</a>
                 </td>
             </tr>
             <% } %>

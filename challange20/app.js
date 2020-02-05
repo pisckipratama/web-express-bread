@@ -23,7 +23,6 @@ const db = new sqlite3.Database(dbName, (err) => {
     if (err) {
         return console.error(err.message);
     }
-    console.log('successfully connection to the database.')
 })
 
 // create main route
@@ -42,6 +41,16 @@ app.get('/', (req, res) => {
 
 // create add route
 app.get('/add', (req, res) => res.render('add'));
+app.post('/add', (req, res) => {
+    const data = [req.body.string, parseInt(req.body.integer), parseFloat(req.body.float), req.body.date, req.body.boolean === 'true' ? 1 : 0];
+    const sql = `insert into data (string, integer, float, date, boolean) values(?, ?, ?, ?, ?)`;
+    db.run(sql, data, (err) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.redirect('/');
+    })
+})
 
 app.get('/edit/:id', (req, res) => {
     const id = req.params.id;
@@ -63,6 +72,17 @@ app.post('/edit/:id', (req, res) => {
     db.run(sql, data, (err) => {
         if (err) {
             console.error(err.message);
+        }
+        res.redirect('/');
+    })
+})
+
+app.get('/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `delete from data where id=?`;
+    db.run(sql, id, (err) => {
+        if (err) {
+            return console.error(err.message);
         }
         res.redirect('/');
     })
