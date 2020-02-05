@@ -28,7 +28,7 @@ const db = new sqlite3.Database(dbName, (err) => {
 // create main route
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
-    const sql = `select * from data order by id`;
+    const sql = `select * from data`;
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.error(err.message);

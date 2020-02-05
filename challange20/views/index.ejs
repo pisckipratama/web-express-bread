@@ -67,10 +67,10 @@
             <% for (const data of model) { %>
             <tr>
                 <th scope="row"> <%= data.id %> </th>
-                <td><%= data.string %></td>
-                <td><%= data.integer %></td>
-                <td><%= data.float %></td>
-                <td><%= data.date %></td>
+                <td><%= data.string ? data.string : "kosong" %></td>
+                <td><%= data.integer ? data.integer : "kosong" %></td>
+                <td><%= data.float ? data.float : "kosong" %></td>
+                <td><%= data.date ? data.date : "kosong" %></td>
                 <td><%= data.boolean ? true : false %></td>
                 <td>
                     <a class="btn btn-success btn-sm" href="/edit/<%= data.id %>" role="button">Edit</a>
