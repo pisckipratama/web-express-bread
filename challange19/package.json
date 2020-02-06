@@ -2,9 +2,9 @@
   "name": "challange19-json-bread",
   "version": "1.0.0",
   "description": "learning bread using express and bootstrap",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "Piscki Pratama <pisckipratama@gmail.com>",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^3.0.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
   }
 }

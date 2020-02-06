@@ -5,39 +5,40 @@
     <h2>Filters</h2>
     <form>
         <div class="form-group row">
-            <label for="inputID" class="col-sm-2 col-form-label"> <input type="checkbox">ID</label>
+            <label for="id" class="col-sm-2 col-form-label"> <input type="checkbox" name="id" value="id"> ID</label>
 
             <div class="col-sm-10">
                 <input type="text" class="form-control" name='id' placeholder="ID">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputString" class="col-sm-2 col-form-label"> <input type="checkbox">String</label>
+            <label for="inputString" class="col-sm-2 col-form-label"> <input type="checkbox" name="string" value="string"> String</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name='string' placeholder="String">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputInteger" class="col-sm-2 col-form-label"> <input type="checkbox">Integer</label>
+            <label for="inputInteger" class="col-sm-2 col-form-label"> <input type="checkbox" name="integer" value="integer"> Integer</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name='integer' placeholder="Integer">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputFloat" class="col-sm-2 col-form-label"> <input type="checkbox">Float</label>
+            <label for="float" class="col-sm-2 col-form-label"> <input type="checkbox" value="float" value="float"> Float</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name='float' placeholder="Float">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label"> <input type="checkbox">Date</label>
+            <label for="date" class="col-sm-2 col-form-label"> <input type="checkbox" value="date" name="date" checked> Date</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="start date"> to
                 <input type="text" class="form-control" name='date' placeholder="end date">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputBoolean" class="col-sm-2 col-form-label"> <input type="checkbox">Boolean</label>
+            <!-- <input type="checkbox" name="boolean" value="boolean" checked> -->
+            <label for="boolean" class="col-sm-2 col-form-label"> <input type="checkbox" value="boolean" name="boolean" checked> Boolean</label>
             <div class="col-sm-10">
                 <select class="custom-select" name="boolean">
                     <option selected>Choose the Boolean</option>
@@ -70,7 +71,7 @@
                 <td><%= data.string ? data.string : "kosong" %></td>
                 <td><%= data.integer ? data.integer : "kosong" %></td>
                 <td><%= data.float ? data.float : "kosong" %></td>
-                <td><%= data.date ? data.date : "kosong" %></td>
+                <td><%= data.date ? moment(data.date).format('LL') : "kosong" %></td>
                 <td><%= data.boolean ? true : false %></td>
                 <td>
                     <a class="btn btn-success btn-sm" href="/edit/<%= data.id %>" role="button">Edit</a>

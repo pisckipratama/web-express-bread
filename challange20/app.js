@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3');
+const moment = require('moment');
+moment.locale('id');
 
 // create express app 
 const app = express();
@@ -34,7 +36,8 @@ app.get('/', (req, res) => {
             console.error(err.message);
         }
         res.render('index', {
-            model: rows
+            model: rows,
+            moment: moment
         });
     })
 });
@@ -86,6 +89,11 @@ app.get('/delete/:id', (req, res) => {
         }
         res.redirect('/');
     })
+})
+
+app.get('/search', (req, res) => {
+    let data = [];
+
 })
 
 app.listen(3000, () => {

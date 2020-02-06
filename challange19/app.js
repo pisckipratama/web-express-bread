@@ -4,6 +4,8 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 let parse = fs.readFileSync('data.json', 'utf8');
 let data = JSON.parse(parse);
+const moment = require('moment');
+moment.locale('id');
 
 const app = express()
 
@@ -19,7 +21,8 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('index', {
-        data: data
+        data: data,
+        moment: moment
     })
 });
 
