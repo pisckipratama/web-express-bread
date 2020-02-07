@@ -92,9 +92,40 @@ app.get('/delete/:id', (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-    let data = [];
+    let data = req.query;
+    let result = [];
+    let sql = 'select * from data where ';
 
-})
+    if (data.checkID === 'on') {
+        result.push(`id=${data.inputID}`);
+    }
+    if (data.checkString === 'on') {
+        result.push(`string='${data.inputString}'`);
+    }
+    if (data.checkInteger === 'on') {
+        result.push(`integer=${data.inputInteger}`);
+    }
+    if (data.checkFloat === 'on') {
+        result.push(`float='${data.inputFloat}'`);
+    }
+    console.log(result);
+
+    for (let i = 0; i < result.length; i++) {
+        sql += result[i] + ' ';
+    }
+
+    console.log(sql);
+
+    db.all(sql, (err, row) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.render('search', {
+            model: row,
+            moment: moment
+        })
+    })
+});
 
 app.listen(3000, () => {
     console.log('server running on http://localhost:3000');
