@@ -30,7 +30,43 @@ const db = new sqlite3.Database(dbName, (err) => {
 // create main route
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
-    const sql = `select * from data`;
+
+    let data = req.query;
+    let result = [];
+    let sql = `select * from data`;
+
+    if (data.checkID === 'on') {
+        result.push(`id=${data.inputID}`);
+    }
+    if (data.checkString === 'on') {
+        result.push(`string='${data.inputString}'`);
+    }
+    if (data.checkInteger === 'on') {
+        result.push(`integer=${data.inputInteger}`);
+    }
+    if (data.checkFloat === 'on') {
+        result.push(`float='${data.inputFloat}'`);
+    }
+    if (data.checkBoolean === 'on') {
+        result.push(`boolean=${data.inputBoolean === 'true' ? '1' : '0'}`)
+    }
+
+    if (result.length > 0) {
+        sql += ' where ';
+        if (result.length > 1) {
+            for (let i = 0; i < result.length; i++) {
+                sql += result[i] + ' and ';
+            }
+            sql = sql.slice(-(Math.abs(sql.length)), -4);
+        } else {
+            for (let i = 0; i < result.length; i++) {
+                sql += result[i] + ' ';
+            }
+        }
+    }
+
+    console.log(sql);
+
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.error(err.message);
@@ -91,41 +127,41 @@ app.get('/delete/:id', (req, res) => {
     })
 })
 
-app.get('/search', (req, res) => {
-    let data = req.query;
-    let result = [];
-    let sql = 'select * from data where ';
+// app.get('/search', (req, res) => {
+//     let data = req.query;
+//     let result = [];
+//     let sql = 'select * from data where ';
 
-    if (data.checkID === 'on') {
-        result.push(`id=${data.inputID}`);
-    }
-    if (data.checkString === 'on') {
-        result.push(`string='${data.inputString}'`);
-    }
-    if (data.checkInteger === 'on') {
-        result.push(`integer=${data.inputInteger}`);
-    }
-    if (data.checkFloat === 'on') {
-        result.push(`float='${data.inputFloat}'`);
-    }
-    console.log(result);
+//     if (data.checkID === 'on') {
+//         result.push(`id=${data.inputID}`);
+//     }
+//     if (data.checkString === 'on') {
+//         result.push(`string='${data.inputString}'`);
+//     }
+//     if (data.checkInteger === 'on') {
+//         result.push(`integer=${data.inputInteger}`);
+//     }
+//     if (data.checkFloat === 'on') {
+//         result.push(`float='${data.inputFloat}'`);
+//     }
+//     console.log(result);
 
-    for (let i = 0; i < result.length; i++) {
-        sql += result[i] + ' ';
-    }
+//     for (let i = 0; i < result.length; i++) {
+//         sql += result[i] + ' ';
+//     }
 
-    console.log(sql);
+//     console.log(sql);
 
-    db.all(sql, (err, row) => {
-        if (err) {
-            return console.error(err.message);
-        }
-        res.render('search', {
-            model: row,
-            moment: moment
-        })
-    })
-});
+//     db.all(sql, (err, row) => {
+//         if (err) {
+//             return console.error(err.message);
+//         }
+//         res.render('search', {
+//             model: row,
+//             moment: moment
+//         })
+//     })
+// });
 
 app.listen(3000, () => {
     console.log('server running on http://localhost:3000');
