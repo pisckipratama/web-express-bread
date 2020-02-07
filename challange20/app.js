@@ -1,3 +1,5 @@
+// challange20: Bread using express.js and sqlite3
+
 // import dependencies
 const express = require('express');
 const path = require('path');
@@ -31,9 +33,11 @@ const db = new sqlite3.Database(dbName, (err) => {
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
 
+    // start logic for filtering
     let data = req.query;
     let result = [];
     let sql = `select * from data`;
+    let forDate = {};
 
     if (data.checkID === 'on') {
         result.push(`id=${data.inputID}`);
@@ -50,6 +54,10 @@ app.get('/', (req, res) => {
     if (data.checkBoolean === 'on') {
         result.push(`boolean=${data.inputBoolean === 'true' ? '1' : '0'}`)
     }
+    if (data.checkDate === 'on') {
+        forDate.startDate = data.startDate;
+        forDate.endDate = data.endDate;
+    }
 
     if (result.length > 0) {
         sql += ' where ';
@@ -65,8 +73,16 @@ app.get('/', (req, res) => {
         }
     }
 
-    console.log(sql);
+    if (forDate.hasOwnProperty('startDate')) {
+        if (sql === 'select * from data') {
+            sql = `select * from data where date between "${forDate.startDate}" and "${forDate.endDate}"`;
+        } else {
+            sql += `and date between "${forDate.startDate}" and "${forDate.endDate}" `;
+        }
+    }
+    // end logic for filtering
 
+    // for showing data
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.error(err.message);
@@ -126,42 +142,6 @@ app.get('/delete/:id', (req, res) => {
         res.redirect('/');
     })
 })
-
-// app.get('/search', (req, res) => {
-//     let data = req.query;
-//     let result = [];
-//     let sql = 'select * from data where ';
-
-//     if (data.checkID === 'on') {
-//         result.push(`id=${data.inputID}`);
-//     }
-//     if (data.checkString === 'on') {
-//         result.push(`string='${data.inputString}'`);
-//     }
-//     if (data.checkInteger === 'on') {
-//         result.push(`integer=${data.inputInteger}`);
-//     }
-//     if (data.checkFloat === 'on') {
-//         result.push(`float='${data.inputFloat}'`);
-//     }
-//     console.log(result);
-
-//     for (let i = 0; i < result.length; i++) {
-//         sql += result[i] + ' ';
-//     }
-
-//     console.log(sql);
-
-//     db.all(sql, (err, row) => {
-//         if (err) {
-//             return console.error(err.message);
-//         }
-//         res.render('search', {
-//             model: row,
-//             moment: moment
-//         })
-//     })
-// });
 
 app.listen(3000, () => {
     console.log('server running on http://localhost:3000');
