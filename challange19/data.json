@@ -8,14 +8,6 @@
       "boolean": false
    },
    {
-      "id": 8,
-      "string": "Mastering Frontend using React JS",
-      "integer": "85",
-      "float": "8.5",
-      "date": "2020-02-18",
-      "boolean": true
-   },
-   {
       "id": 9,
       "string": "Mastering MongoDB",
       "integer": "90",
@@ -30,5 +22,13 @@
       "float": "7.5",
       "date": "2020-02-29",
       "boolean": false
+   },
+   {
+      "id": 11,
+      "string": "make history",
+      "integer": "76",
+      "float": "76.1",
+      "date": "2020-02-08",
+      "boolean": true
    }
 ]
