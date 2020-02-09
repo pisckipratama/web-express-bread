@@ -82,15 +82,35 @@ app.get('/', (req, res) => {
     }
     // end logic for filtering
 
-    // for showing data
-    db.all(sql, [], (err, rows) => {
+
+    // start logic for pagination
+    const page = req.query.page || 1;
+    const limit = 4;
+    const offset = (page - 1) * limit;
+
+    db.all(sql, (err, rows) => {
         if (err) {
             console.error(err.message);
         }
-        res.render('index', {
-            model: rows,
-            moment: moment
-        });
+
+        const totalPage = Math.ceil(rows.length / limit);
+        const url = req.url == '/' ? '/?page=1' : req.url;
+
+        if ('/?page' in req.query) {
+            delete url['/?page']
+        }
+        sql += ` limit ${limit} offset ${offset}`;
+
+        db.all(sql, (err, rows) => {
+            res.render('index', {
+                model: rows,
+                moment: moment,
+                query: req.query,
+                totalPage,
+                page: parseInt(page),
+                url
+            });
+        })
     })
 });
 
