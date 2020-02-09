@@ -33,7 +33,7 @@ const db = new sqlite3.Database(dbName, (err) => {
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
 
-    // start logic for filtering
+    // === start logic for filtering ===
     let data = req.query;
     let result = [];
     let sql = `select * from data`;
@@ -80,10 +80,10 @@ app.get('/', (req, res) => {
             sql += `and date between "${forDate.startDate}" and "${forDate.endDate}" `;
         }
     }
-    // end logic for filtering
+    // === end logic for filtering ===
 
 
-    // start logic for pagination
+    // *** start logic for pagination ***
     const page = req.query.page || 1;
     const limit = 4;
     const offset = (page - 1) * limit;
@@ -101,6 +101,9 @@ app.get('/', (req, res) => {
         }
         sql += ` limit ${limit} offset ${offset}`;
 
+    // *** end logic for pagination ***
+
+    // Show data
         db.all(sql, (err, rows) => {
             res.render('index', {
                 model: rows,
