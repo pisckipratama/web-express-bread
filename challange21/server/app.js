@@ -1,36 +1,30 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const { Client } = require('pg');
-const client = new Client()
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-await client.connect();
+// set db connection 
+const { Pool } = require('pg')
+const pool = new Pool({
+  user: 'pisckipy',
+  host: 'localhost',
+  database: 'bread_pg',
+  password: 'Bismillah',
+  port: 5432,
+})
 
-const res = await client.query('select $1::text as message', ['Hello World!']);
-console.log(res.rows[0].message);
-await client.end();
+var indexRouter = require('./routes/index')(pool);
 
-const app = express();
+var app = express();
 
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+}));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use('/api', indexRouter);
 
-app.use(bodyParser.json());
-
-app.get('/', (req, res) => {
-    res.render('index');
-})
-
-app.get('/add', (req, res) => {
-    res.render('add');
-})
-
-app.listen(3000, () => {
-    console.log('server running at http://localhost:3000');
-});
+module.exports = app;
