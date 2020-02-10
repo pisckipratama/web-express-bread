@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Fresca&display=swap" rel="stylesheet">
+
+  <title><%= title %></title>
+</head>
+
+<body style="font-family: 'Fresca', sans-serif;">
+  <div class="container">
+    <h1 class="text-center">BREAD<br> <small>(Browse, Read, Edit, Add, Delete)</small> </h1>
+    <hr>
+    <h2>Filters</h2>
+    <form id="form-control" method="GET">
+      <div class="form-group row">
+        <label for="inputID" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkID"> ID</label>
+
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name='inputID' placeholder="ID">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputString" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkString">
+          String</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name='inputString' placeholder="String">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputInteger" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkInteger">
+          Integer</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name='inputInteger' placeholder="Integer">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputFloat" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkFloat">
+          Float</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name='inputFloat' placeholder="Float">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="startDate" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkDate">
+          Date</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name='startDate' placeholder="start date"> to
+          <input type="text" class="form-control" name='endDate' placeholder="end date">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputBoolean" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkBoolean">
+          Boolean</label>
+        <div class="col-sm-10">
+          <select class="custom-select" name="inputBoolean">
+            <option value="false">false</option>
+            <option value="true" selected>true</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+      <a class="btn btn-success btn" href="/" role="button">Show All</a>
+    </form>
+
+    <br>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">String</th>
+          <th scope="col">Integer</th>
+          <th scope="col">Float</th>
+          <th scope="col">Date</th>
+          <th scope="col">Boolean</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <br>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn-primary" href="/add" role="button" on>Add</a>
+
+  </div>
+  <br>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    const apiUrl = "http://localhost:3000/api";
+    $(document).ready(() => {
+      loadData();
+      $('#form-control').submit((e) => {
+        e.preventDefault();
+        saveData();
+      });
+
+      $('table tbody').on('click', '.btn-edit', (event) => {
+        editData($(event.currentTarget).attr('data-id'))
+      })
+    })
+
+    const loadData = () => {
+      $.ajax({
+          method: 'GET',
+          url: `${apiUrl}`,
+          dataType: 'json'
+        })
+        .done((result) => {
+          let html = '';
+          console.log(result);
+          const data = result.result
+          data.forEach(item => {
+            html += `<tr>
+            <td>${item.id}</td>
+            <td>${item.string}</td>
+            <td>${item.integer}</td>
+            <td>${item.float}</td>
+            <td>${item.date}</td>
+            <td>${item.boolean ? 'true' : 'false'}</td>
+            <td>
+                <button type="button" class="btn btn-success btn-edit" data-id="${item.id}">Edit</button>
+                <button type="button" class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
+        </tr>`
+          })
+          $('table tbody').html(html);
+        })
+    }
+  </script>
+</body>
+
+</html>
