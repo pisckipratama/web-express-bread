@@ -11,4 +11,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
+router.get('/add', (req, res, next) => {
+  res.render('add', { title: 'Postgres BREAD' });
+})
 module.exports = router;
