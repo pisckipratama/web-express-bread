@@ -6,6 +6,7 @@
     <hr>
     <h2>Filters</h2>
     <form id="form-control" method="GET">
+      <input type="hidden" id="id" value="">
       <div class="form-group row">
         <label for="inputID" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkID"> ID</label>
 
@@ -86,7 +87,7 @@
       </ul>
     </nav>
 
-    <a class="btn btn-primary" href="/add" role="button" on>Add</a>
+    <a class="btn btn-primary btn-add" href="/add" role="button" on>Add</a>
 
   </div>
   <br>
@@ -105,6 +106,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
     const apiUrl = "http://localhost:3000/api";
+    const clientUrl = "http://localhost:30001/";
     $(document).ready(() => {
       loadData();
       $('#form-control').submit((e) => {
@@ -114,6 +116,10 @@
 
       $('table tbody').on('click', '.btn-edit', (event) => {
         editData($(event.currentTarget).attr('data-id'))
+      })
+
+      $('table tbody').on('click', '.btn-delete', (event) => {
+        deleteData($(event.currentTarget).attr('data-id'))
       })
     })
 
@@ -143,5 +149,16 @@
           $('table tbody').html(html);
         })
     }
+
+    const deleteData = (id) => {
+      $.ajax({
+          method: "DELETE",
+          url: `${apiUrl}/${id}`,
+          dataType: 'json'
+        })
+        .done((result) => {
+          loadData();
+        })
+    }
   </script>
-<%- include("partials/_footer") %>
+  <%- include("partials/_footer") %>
