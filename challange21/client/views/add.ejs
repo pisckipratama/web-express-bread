@@ -6,48 +6,48 @@
       <h1 class="text-center">BREAD<br> <small>(Browse, Read, Edit, Add, Delete)</small> </h1>
       <hr>
       <h2>Add Data</h2>
-      <form action="http://localhost:3000/" method="POST">
+      <form id="form-add">
+        <input type="hidden" id="id" value="">
         <div class="form-group row">
           <label for="inputString" class="col-sm-2 col-form-label">String</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="string" placeholder="String">
+            <input type="text" class="form-control" id="string" name="string" placeholder="String">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputInteger" class="col-sm-2 col-form-label">Integer</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name='integer' placeholder="Integer">
+            <input type="text" class="form-control" id="integer" name='integer' placeholder="Integer">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputFloat" class="col-sm-2 col-form-label">Float</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name='float' placeholder="Float">
+            <input type="text" class="form-control" id="float" name='float' placeholder="Float">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
           <div class="col-sm-10">
-            <input type="date" class="form-control" name="date" placeholder="End Date">
+            <input type="date" class="form-control" id="date" name="date" placeholder="End Date">
           </div>
         </div>
         <div class="form-group row">
           <label for="inputBoolean" class="col-sm-2 col-form-label">Boolean</label>
           <div class="col-sm-10">
-            <select class="custom-select" name="boolean">
+            <select class="custom-select" id="boolean" name="boolean">
               <option value="false">false</option>
               <option value="true">true</option>
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-success add-data">Save</button>
-        <a class="btn btn-warning cancel" href="/">Cancel</a>
+        <button type="submit" class="btn btn-success button-add">Save</button>
+        <a class="btn btn-warning" href="/">Cancel</a>
       </form>
       <br>
     </div>
   </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
   </script>
@@ -61,23 +61,40 @@
   <script type="text/javascript">
     const apiUrl = "http://localhost:3000/api";
     $(document).ready(() => {
-      $(".add-data").click((e) => {
+      $('#form-add').submit((e) => {
         e.preventDefault();
-        let formAction = $("#form-add").find("form").attr("action");
-        let string = $('#form-add').find("input[name='string']").val();
-        let integer = $('#form-add').find("input[name='integer']").val();
-        let float = $('#form-add').find("input[name='float']").val();
-        let date = $('#form-add').find("input[name='date']").val();
-        let boolean = $('#form-add').find("input[name='boolean']").val();
+        addData();
+      });
 
-        $.ajax({
-          method: 'POST',
-          url: `${apiUrl}`,
-          dataType: 'json'
-        }).done((data) => {
-          $("")
-        })
+      $('table tbody').on('click', '.btn-delete', (event) => {
+        deleteData($(event.currentTarget).attr('data-id'))
       })
+
+      const addData = () => {
+        $.ajax({
+          method: "POST",
+          url: `${apiUrl}`,
+          data: {
+            string: $('#string').val(),
+            integer: $('#integer').val(),
+            float: $('#float').val(),
+            date: $('#date').val(),
+            boolean: $('#boolean').val(),
+          },
+          dataType: 'json'
+        })
+          .done((result) => {
+            $('#id').val('');
+            $('#string').val('');
+            $('#integer').val('');
+            $('#float').val('');
+            $('#date').val('');
+            $('#boolean').val('');
+            location.replace('/')
+          })
+      }
     })
   </script>
-  <%- include("partials/_footer") %>
+</body>
+
+</html>

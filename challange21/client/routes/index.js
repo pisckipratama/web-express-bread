@@ -16,4 +16,10 @@ router.get('/add', (req, res, next) => {
   res.render('add', { title })
 })
 
+router.get('/edit/:id', (req, res, next) => {
+  res.render('edit', {
+    title
+  })
+})
+
 module.exports = router;

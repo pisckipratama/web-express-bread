@@ -106,17 +106,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
     const apiUrl = "http://localhost:3000/api";
-    const clientUrl = "http://localhost:30001/";
     $(document).ready(() => {
       loadData();
       $('#form-control').submit((e) => {
         e.preventDefault();
-        saveData();
       });
-
-      $('table tbody').on('click', '.btn-edit', (event) => {
-        editData($(event.currentTarget).attr('data-id'))
-      })
 
       $('table tbody').on('click', '.btn-delete', (event) => {
         deleteData($(event.currentTarget).attr('data-id'))
@@ -142,7 +136,7 @@
             <td>${item.date}</td>
             <td>${item.boolean}</td>
             <td>
-                <button type="button" class="btn btn-success btn-edit" data-id="${item.id}">Edit</button>
+                <a class="btn btn-success" href="/edit/${item.id}" role="button" on>Edit</a>
                 <button type="button" class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
         </tr>`
           })
@@ -161,4 +155,5 @@
         })
     }
   </script>
-  <%- include("partials/_footer") %>
+</body>
+</html>
