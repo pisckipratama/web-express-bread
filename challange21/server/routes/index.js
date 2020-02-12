@@ -21,6 +21,22 @@ module.exports = (pool) => {
     })
   });
 
+  router.get('/:id', (req, res, next) => {
+    let id = req.params.id;
+    const sqlData = `select * from data where id=${id} order by id`;
+    pool.query(sqlData, (err, data) => {
+      if (err) res.status(500).send(err);
+      let result = data.rows.map(item => {
+        item.date = moment(item.date).format('LL');
+        item.boolean = item.boolean ? true : false;
+        return item
+      })
+      res.status(200).json({
+        result
+      })
+    })
+  });
+
   router.put('/:id', (req, res, next) => {
     const id = req.params.id;
     const { string, integer, float, date } = req.body;
