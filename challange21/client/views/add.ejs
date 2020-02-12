@@ -65,24 +65,22 @@
         e.preventDefault();
         addData();
       });
-
       $('table tbody').on('click', '.btn-delete', (event) => {
         deleteData($(event.currentTarget).attr('data-id'))
       })
-
       const addData = () => {
         $.ajax({
-          method: "POST",
-          url: `${apiUrl}`,
-          data: {
-            string: $('#string').val(),
-            integer: $('#integer').val(),
-            float: $('#float').val(),
-            date: $('#date').val(),
-            boolean: $('#boolean').val(),
-          },
-          dataType: 'json'
-        })
+            method: "POST",
+            url: `${apiUrl}`,
+            data: {
+              string: $('#string').val(),
+              integer: $('#integer').val(),
+              float: $('#float').val(),
+              date: $('#date').val(),
+              boolean: $('#boolean').val(),
+            },
+            dataType: 'json'
+          })
           .done((result) => {
             $('#id').val('');
             $('#string').val('');

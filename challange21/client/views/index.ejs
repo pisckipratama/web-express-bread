@@ -89,6 +89,68 @@
 
     <a class="btn btn-primary btn-add" href="/add" role="button" on>Add</a>
 
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="editModalLabel">Edit Data</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="form-edit">
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="inputString" class="col-sm-2 col-form-label">ID</label>
+                <div class="col-sm-10">
+                  <input type="number" id="modalId" class="form-control" name="id" value="" disabled>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputString" class="col-sm-2 col-form-label">String</label>
+                <div class="col-sm-10">
+                  <input type="text" id="modalString" class="form-control" name="string" placeholder="String" value="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputInteger" class="col-sm-2 col-form-label">Integer</label>
+                <div class="col-sm-10">
+                  <input type="text" id="modalInteger" class="form-control" name="integer" placeholder="Integer"
+                    value="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputFloat" class="col-sm-2 col-form-label">Float</label>
+                <div class="col-sm-10">
+                  <input type="text" id="modalFloat" class="form-control" name="float" placeholder="Float" value="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                  <input type="date" id="modalDate" class="form-control" name="date" value="">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputBoolean" class="col-sm-2 col-form-label">Boolean</label>
+                <div class="col-sm-10">
+                  <select id="modalBoolean" class="custom-select" name="boolean">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="submit-data" class="btn btn-outline-primary btn-save-change" dataid=""
+                data-dismiss="modal">Save changes</button>
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div>
   <br>
 
@@ -112,10 +174,52 @@
         e.preventDefault();
       });
 
+      $('table tbody').on('click', '.btn-edit', (event) => {
+        showData($(event.currentTarget).attr('data-id'));
+      })
+
       $('table tbody').on('click', '.btn-delete', (event) => {
+        event.preventDefault();
         deleteData($(event.currentTarget).attr('data-id'))
       })
+
+      $('.modal-footer').on('click', '.btn-save-change', (event) => {
+        event.preventDefault();
+        saveData($(event.currentTarget).attr('data-id'));
+        loadData();
+      })
+
     })
+
+    const showData = param => {
+      $.ajax({
+          method: "GET",
+          url: `${apiUrl}/${param}`,
+          dataType: 'json'
+        })
+        .done(result => {
+          let data = result.result;
+          let html = '';
+          let button = '';
+          data.forEach(item => {
+            $('button#submit-data').attr('dataid', item.id);
+            $('input#modalId').val(item.id);
+            $('button#yesdelete').val(item.id);
+            $('input#modalString').val(item.string);
+            $('input#modalInteger').val(item.integer);
+            $('input#modalFloat').val(item.float);
+            $('input#modalDate').val(item.date);
+            if (item.boolean) {
+              html += `<option value="false">false</option>
+              <option value="true" selected>true</option>`
+            } else {
+              html += `<option value="false" selected>false</option>
+              <option value="true">true</option>`
+            }
+          })
+          $('#modalBoolean').html(html);
+        })
+    }
 
     const loadData = () => {
       $.ajax({
@@ -125,7 +229,6 @@
         })
         .done((result) => {
           let html = '';
-          console.log(result);
           const data = result.result
           data.forEach(item => {
             html += `<tr>
@@ -136,9 +239,10 @@
             <td>${item.date}</td>
             <td>${item.boolean}</td>
             <td>
-                <a class="btn btn-success" href="/edit/${item.id}" role="button" on>Edit</a>
+                <button type="button" class="btn btn-success btn-edit" data-id="${item.id}" data-toggle="modal" data-target="#editModal">Edit</button>
                 <button type="button" class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
         </tr>`
+        
           })
           $('table tbody').html(html);
         })
@@ -154,6 +258,27 @@
           loadData();
         })
     }
+
+    const saveData = (param) => {
+      $.ajax({
+          method: "PUT",
+          url: `${apiUrl}/${param}`,
+          data: {
+            id: `${param}`,
+            string: $('#modalString').val(),
+            integer: $('#modalInteger').val(),
+            float: $('#modalFloat').val(),
+            date: $('#modalDate').val(),
+            boolean: $('#modalBoolean').val(),
+          },
+          dataType: 'json'
+        })
+        .done((result) => {
+          loadData();
+          $('#editModal').modal('hide')
+        })
+    }
   </script>
 </body>
+
 </html>

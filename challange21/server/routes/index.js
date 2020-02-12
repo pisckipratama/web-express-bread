@@ -27,8 +27,6 @@ module.exports = (pool) => {
     pool.query(sqlData, (err, data) => {
       if (err) res.status(500).send(err);
       let result = data.rows.map(item => {
-        item.date = moment(item.date).format('LL');
-        item.boolean = item.boolean ? true : false;
         return item
       })
       res.status(200).json({
