@@ -45,7 +45,7 @@ module.exports = (pool) => {
         for (let i = 0; i < result.length; i++) {
           sqlData += result[i] + ' and ';
         }
-        sqlData = sql.slice(-(Math.abs(sql.length)), -4);
+        sqlData = sqlData.slice(-(Math.abs(sqlData.length)), -4);
       } else {
         for (let i = 0; i < result.length; i++) {
           sqlData += result[i] + ' ';
@@ -76,7 +76,9 @@ module.exports = (pool) => {
       pool.query(sqlData, (err, data) => {
         if (err) res.status(500).send(err);
         let result = data.rows.map(item => {
-          item.date = moment(item.date).format('LL');
+          item.string = item.string ? item.string : 'kosong'
+          item.integer = item.string ? item.string : 'kosong'
+          item.date = moment(item.date).format('LL') == 'Invalid date' ? 'kosong' : moment(item.date).format('LL');
           item.boolean = item.boolean ? true : false;
           return item
         })
