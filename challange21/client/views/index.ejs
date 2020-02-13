@@ -6,7 +6,7 @@
     <hr>
     <h2>Filters</h2>
     <form id="form-control" method="GET">
-      <input type="hidden" id="id" value="">
+      <input type="hidden" id="page" name="page" value="1">
       <div class="form-group row">
         <label for="inputID" class="col-sm-2 col-form-label"> <input type="checkbox" name="checkID"> ID</label>
 
@@ -78,12 +78,7 @@
     <br>
 
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      <ul class="pagination justify-content-center">
       </ul>
     </nav>
 
@@ -185,7 +180,25 @@
 
       $('.modal-footer').on('click', '.btn-save-change', (event) => {
         event.preventDefault();
-        saveData($(event.currentTarget).attr('data-id'));
+        saveData($(event.currentTarget).attr('dataid'));
+        loadData();
+      })
+
+      $('ul.pagination').on('click', '.previous', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val(parseInt(page) - 1);
+        loadData();
+      })
+
+      $('ul.pagination').on('click', '.pageNow', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val($(event.currentTarget).attr('data-page'));
+        loadData();
+      })
+
+      $('ul.pagination').on('click', '.next', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val(parseInt(page) + 1);
         loadData();
       })
 
@@ -200,7 +213,6 @@
         .done(result => {
           let data = result.result;
           let html = '';
-          let button = '';
           data.forEach(item => {
             $('button#submit-data').attr('dataid', item.id);
             $('input#modalId').val(item.id);
@@ -222,15 +234,22 @@
     }
 
     const loadData = () => {
+      const data = $('#form-control').serializeArray();
       $.ajax({
           method: 'GET',
           url: `${apiUrl}`,
+          data: data,
           dataType: 'json'
         })
         .done((result) => {
+          const value = result.result
+          let pageNow = $('#page').val();
+          if(value.length == 0 && pageNow != '1') {
+            $('#page').val(pageNow - 1);
+            loadData();
+          }
           let html = '';
-          const data = result.result
-          data.forEach(item => {
+          value.forEach(item => {
             html += `<tr>
             <td>${item.id}</td>
             <td>${item.string}</td>
@@ -242,9 +261,25 @@
                 <button type="button" class="btn btn-success btn-edit" data-id="${item.id}" data-toggle="modal" data-target="#editModal">Edit</button>
                 <button type="button" class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
         </tr>`
-        
           })
+
           $('table tbody').html(html);
+
+          let currentPage = result.currentPage;
+          let totalPage = result.totalPage;
+          let url = result.url;
+
+          let pagination =
+            `<li class="page-item ${currentPage <=1 ? ' disabled' : ''}"><button class="page-link previous" tabindex="-1" aria-disabled="true">Previous</button></li>\n`;
+          for (let i = 1; i <= totalPage; i++) {
+            pagination +=
+              `<li class="page-item ${currentPage == i ? 'active': ''}"><button class="page-link pageNow" data-page='${i}'>${i}</button></li>\n`
+          }
+
+          pagination +=
+            `<li class="page-item ${currentPage >= totalPage ? ' disabled' : ''}"><button class="page-link next">Next</button></li>`;
+
+          $('nav ul').html(pagination);
         })
     }
 

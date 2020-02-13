@@ -7,16 +7,37 @@ moment.locale('id')
 
 module.exports = (pool) => {
   router.get('/', (req, res, next) => {
-    const sqlData = `select * from data order by id`;
+    let sqlData = `select * from data order by id`;
+
+    // pagination logic
+    const limit = 5;
+    const currentPage = parseInt(req.query.page) || 1;
+    const offset = parseInt(currentPage - 1) * limit;
+
     pool.query(sqlData, (err, data) => {
       if (err) res.status(500).send(err);
-      let result = data.rows.map(item => {
-        item.date = moment(item.date).format('LL');
-        item.boolean = item.boolean ? true : false;
-        return item
-      })
-      res.status(200).json({
-        result
+
+      const totalRows = data.rows.length;
+      const totalPage = Math.ceil(totalRows / limit)
+      const url = req.url == '/' ? '/?page=1' : req.url;
+
+      sqlData += ` limit ${limit} offset ${offset}`;
+
+      pool.query(sqlData, (err, data) => {
+        if (err) res.status(500).send(err);
+        let result = data.rows.map(item => {
+          item.date = moment(item.date).format('LL');
+          item.boolean = item.boolean ? true : false;
+          return item
+        })
+        res.status(200).json({
+          result,
+          url,
+          offset,
+          totalPage,
+          currentPage,
+          query: req.query
+        })
       })
     })
   });
@@ -37,11 +58,17 @@ module.exports = (pool) => {
 
   router.put('/:id', (req, res, next) => {
     const id = req.params.id;
-    const { string, integer, float, date } = req.body;
+    const {
+      string,
+      integer,
+      float,
+      date
+    } = req.body;
     const boolean = req.body.boolean == 'true' ? 1 : 0;
     const sqlEdit = `update data set string='${string}', integer=${integer}, float=${float}, date='${date}', boolean=${boolean} where id=${id}`;
+    console.log(sqlEdit);
     pool.query(sqlEdit, (err, data) => {
-      if(err) res.status(500).send(err);
+      if (err) res.status(500).send(err);
       res.status(201).json({
         string: string,
         integer: integer,
@@ -53,7 +80,12 @@ module.exports = (pool) => {
   })
 
   router.post('/', (req, res, next) => {
-    const { string, integer, float, date } = req.body;
+    const {
+      string,
+      integer,
+      float,
+      date
+    } = req.body;
     const boolean = req.body.boolean == 'true' ? 1 : 0;
     const sqlAdd = `insert into data (string, integer, float, date, boolean) values('${string}', ${integer}, ${float}, '${date}', ${boolean})`;
     pool.query(sqlAdd, (err, data) => {
@@ -75,7 +107,7 @@ module.exports = (pool) => {
       if (err) res.status(500).send(err);
       res.status(201).json({
         id: id
-      }) 
+      })
     })
   })
 
