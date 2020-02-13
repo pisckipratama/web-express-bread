@@ -165,8 +165,10 @@
     const apiUrl = "http://localhost:3000/api";
     $(document).ready(() => {
       loadData();
+      
       $('#form-control').submit((e) => {
         e.preventDefault();
+        loadData();
       });
 
       $('table tbody').on('click', '.btn-edit', (event) => {

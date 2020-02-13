@@ -7,17 +7,67 @@ moment.locale('id')
 
 module.exports = (pool) => {
   router.get('/', (req, res, next) => {
-    let sqlData = `select * from data order by id`;
+    let sqlData = `select * from data`;
 
     // pagination logic
     const limit = 5;
     const currentPage = parseInt(req.query.page) || 1;
     const offset = parseInt(currentPage - 1) * limit;
 
+    // === start logic for filtering ===
+    let queries = req.query;
+    let result = [];
+    let forDate = {};
+
+    if (queries.checkID === 'on') {
+      result.push(`id=${queries.inputID}`);
+    }
+    if (queries.checkString === 'on') {
+      result.push(`string='${queries.inputString}'`);
+    }
+    if (queries.checkInteger === 'on') {
+      result.push(`integer=${queries.inputInteger}`);
+    }
+    if (queries.checkFloat === 'on') {
+      result.push(`float='${queries.inputFloat}'`);
+    }
+    if (queries.checkBoolean === 'on') {
+      result.push(`boolean=${queries.inputBoolean === 'true' ? '1' : '0'}`)
+    }
+    if (queries.checkDate === 'on') {
+      forDate.startDate = queries.startDate;
+      forDate.endDate = queries.endDate;
+    }
+
+    if (result.length > 0) {
+      sqlData += ' where ';
+      if (result.length > 1) {
+        for (let i = 0; i < result.length; i++) {
+          sqlData += result[i] + ' and ';
+        }
+        sqlData = sql.slice(-(Math.abs(sql.length)), -4);
+      } else {
+        for (let i = 0; i < result.length; i++) {
+          sqlData += result[i] + ' ';
+        }
+      }
+    }
+
+    if (forDate.hasOwnProperty('startDate')) {
+      if (sqlData === 'select * from data') {
+        sqlData = `select * from data where date between '${forDate.startDate}' and '${forDate.endDate}'`;
+      } else {
+        sqlData += `and date between '${forDate.startDate}' and '${forDate.endDate}' `;
+      }
+    }
+
+    sqlData += ' order by id desc';
+    console.log(sqlData);
+
     pool.query(sqlData, (err, data) => {
       if (err) res.status(500).send(err);
 
-      const totalRows = data.rows.length;
+      const totalRows = data.rows.length === undefined ? 0 : data.rows.length;
       const totalPage = Math.ceil(totalRows / limit)
       const url = req.url == '/' ? '/?page=1' : req.url;
 
