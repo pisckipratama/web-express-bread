@@ -6,6 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3');
 const moment = require('moment');
+const logger = require('morgan');
 moment.locale('id');
 
 // create express app 
@@ -20,6 +21,9 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+
+// setting logger
+app.use(logger("dev"));
 
 // setting db connection
 const dbName = path.join(__dirname, 'data', 'bread.db');
@@ -166,6 +170,6 @@ app.get('/delete/:id', (req, res) => {
     })
 })
 
-app.listen(3000, () => {
+app.listen(8000, () => {
     console.log('server running on http://localhost:3000');
 })
