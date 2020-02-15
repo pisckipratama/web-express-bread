@@ -4,7 +4,7 @@
   "description": "Learn bread using sqlite3",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "Piscki Pratama <pisckipratama@gmail.com>",
@@ -14,6 +14,8 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "moment": "^2.24.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
     "sqlite3": "^4.1.1"
   }
 }

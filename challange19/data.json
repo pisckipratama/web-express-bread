@@ -9,7 +9,7 @@
    },
    {
       "id": 9,
-      "string": "Mastering MongoDB",
+      "string": "Mastering server ubuntu",
       "integer": "90",
       "float": "9.2",
       "date": "2020-02-10",
@@ -30,5 +30,13 @@
       "float": "76.1",
       "date": "2020-02-08",
       "boolean": true
+   },
+   {
+      "id": 12,
+      "string": "belajar server",
+      "integer": "21",
+      "float": "2.1",
+      "date": "",
+      "boolean": false
    }
 ]

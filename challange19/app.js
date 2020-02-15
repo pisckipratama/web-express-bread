@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const logger = require('morgan');
 let parse = fs.readFileSync('data.json', 'utf8');
 let data = JSON.parse(parse);
 const moment = require('moment');
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+app.use(logger("dev"));
 
 // create main route
 app.use('/', express.static(path.join(__dirname, 'public')));
