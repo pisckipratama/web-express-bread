@@ -9,7 +9,6 @@ const getData = (req, res, next) => {
 
     for (let i = 0; i < data.length; i++) {
       data[i].date = moment(data[i].date).format('LL') === 'Invalid date' ? 'kosong' : moment(data[i].date).format('LL');
-      data[i].boolean = data[i].boolean == 1 ? true : false;
     }
     res.json({
       result: data

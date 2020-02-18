@@ -165,6 +165,12 @@
 
     $(document).ready(() => {
       loadData();
+
+      $('table tbody').on('click', '.btn-delete', (event) => {
+        event.preventDefault();
+        deleteData($(event.currentTarget).attr('data-id'))
+      })
+      
     });
 
     const loadData = () => {
@@ -195,6 +201,18 @@
           $('table tbody').html(html);
         })
     }
+
+    const deleteData = (id) => {
+      $.ajax({
+          method: "DELETE",
+          url: `${apiUrl}/${id}`,
+          dataType: 'json'
+        })
+        .done((result) => {
+          loadData();
+        })
+    }
+
   </script>
 </body>
 

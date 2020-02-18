@@ -11,13 +11,9 @@ const indexRouter = require('./routes/index.route');
 
 // create app
 const app = express();
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 // use middleware
+app.use(cors())
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
@@ -30,11 +26,11 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://localhost:27017/bread_mongo', {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: true
 })
 .then(() => console.log('DB connected successfully'))
 .catch((err) => console.error(err))
-
 
 // use router
 app.use('/', indexRouter);
