@@ -6,4 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'BREAD MongoDB' });
 });
 
+router.get('/add', function(req, res, next) {
+  res.render('add', { title: 'BREAD MongoDB' });
+});
+
 module.exports = router;
