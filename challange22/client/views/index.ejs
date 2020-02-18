@@ -68,12 +68,10 @@
       </tbody>
     </table>
 
-    <br>
-
-    <!-- <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
       </ul>
-    </nav> -->
+    </nav>
 
     <a class="btn btn-primary btn-add" href="/add" role="button" on>Add</a>
 
@@ -174,6 +172,24 @@
         loadData();
       })
 
+      $('ul.pagination').on('click', '.previous', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val(parseInt(page) - 1);
+        loadData();
+      })
+
+      $('ul.pagination').on('click', '.pageNow', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val($(event.currentTarget).attr('data-page'));
+        loadData();
+      })
+
+      $('ul.pagination').on('click', '.next', (event) => {
+        let page = $('input#page').val();
+        $('input#page').val(parseInt(page) + 1);
+        loadData();
+      })
+
     });
 
     const loadData = () => {
@@ -203,6 +219,21 @@
           </tr>`
           })
           $('table tbody').html(html);
+
+          let page = result.page;
+          let pages = result.pages;
+          let url = result.url;
+          let pagination =
+            `<li class="page-item ${page <=1 ? ' disabled' : ''}"><button class="page-link previous" tabindex="-1"
+              aria-disabled="true">Previous</button></li>\n`;
+          for (let i = 1; i <= pages; i++) {
+            pagination += `<li class="page-item ${page == i ? 'active': ''}">
+            <button class="page-link pageNow" data-page='${i}'>${i}</button></li>\n`
+          }
+          pagination +=
+            `<li class="page-item ${page >= pages ? ' disabled' : ''}"><button
+                class="page-link next">Next</button></li>`;
+          $('nav ul').html(pagination);
         })
     }
 

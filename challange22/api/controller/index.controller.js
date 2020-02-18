@@ -3,6 +3,7 @@ const dataModels = require('../models/index.models');
 moment.locale('id');
 
 const getData = (req, res, next) => {
+  // start logic for filtering
   let {
     checkString,
     checkInteger,
@@ -36,15 +37,31 @@ const getData = (req, res, next) => {
     querySearch.date = {$gte: req.query.startDate, $lte: req.query.endDate}
   }
 
-  dataModels.find(querySearch, (err, data) => {
-    if (err) return next(err);
+  // end logic for filtering
 
-    for (let i = 0; i < data.length; i++) {
-      data[i].date = moment(data[i].date).format('LL') === 'Invalid date' ? 'kosong' : moment(data[i].date).format('LL');
-    }
-    res.json({
-      result: data
-    })
+  // start logic for pagination 
+  const page = req.query.page || 1;
+  const limit = 3;
+  const offset = (page - 1) * limit;
+  const url = req.url === '/' ? '/?page=1' : req.url;
+
+  dataModels.find(querySearch, (err, data) => {
+    let totalData = data.length
+    dataModels.find(querySearch, (err, data) => {
+      if (err) res.json(err);
+
+      for (let i = 0; i < data.length; i++) {
+        data[i].date = moment(data[i].date).format('LL') === 'Invalid date' ? 'kosong' : moment(data[i].date).format('LL');
+      }
+
+      res.json({
+        result: data,
+        url,
+        page,
+        pages: Math.ceil(totalData / limit),
+        query: req.query
+      })
+    }).skip(offset).limit(limit)
   })
 }
 
