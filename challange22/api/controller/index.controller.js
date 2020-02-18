@@ -24,9 +24,16 @@ const addData = (req, res, next) => {
 }
 
 const getOne = (req, res, next) => {
-  dataModels.findById(req.params.id, (err, post) => {
+  dataModels.findById(req.params.id, (err, data) => {
     if (err) return next(err)
-    res.json(post)
+
+    for (let i = 0; i < data.length; i++) {
+      data[i].date = moment(data[i].date).format('LL') === 'Invalid date' ? 'kosong' : moment(data[i].date).format('LL');
+    }
+
+    res.json({
+      result: data
+    })
   })
 }
 
