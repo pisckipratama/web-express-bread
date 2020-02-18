@@ -1,4 +1,6 @@
+const moment = require('moment');
 Data = require('../models/index.models');
+moment.locale('id');
 
 exports.index = (req, res) => {
   Data.get((err, data) => {
@@ -8,10 +10,18 @@ exports.index = (req, res) => {
         message: err
       })
     }
+
+    console.log(data);
+
+    for (let i = 0; i < data.length; i++) {
+      data[i].date = moment(data[i].date).format('LL');
+      data[i].boolean = data[i].boolean == 1 ? true : false;
+    }
+
     res.json({
       status: "success",
-      message: "Contacts retrieved successfully",
-      data: data
+      message: "data retrieved successfully",
+      result: data
     })
   })
 }
