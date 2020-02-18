@@ -55,7 +55,6 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">No</th>
           <th scope="col">String</th>
           <th scope="col">Integer</th>
           <th scope="col">Float</th>
@@ -206,7 +205,6 @@
           let html = '';
           data.forEach((item, index) => {
             html += `<tr>
-          <td>${index+1}</td>
           <td>${item.string ? item.string : 'kosong'}</td>
           <td>${item.integer ? item.integer : 'kosong'}</td>
           <td>${item.float ? item.float : 'kosong'}</td>
