@@ -8,23 +8,27 @@ const getData = (req, res, next) => {
     checkInteger,
     checkFloat,
     checkBoolean,
-    checkDate
+    checkDate,
+    inputString,
+    inputFloat,
+    inputInteger,
+    inputBoolean
   } = req.query
   let querySearch = {}
 
-  if (checkString === 'on') {
+  if (checkString === 'on' && inputString) {
     querySearch.string = req.query.inputString
   }
 
-  if (checkInteger === 'on') {
+  if (checkInteger === 'on' && inputInteger) {
     querySearch.integer = req.query.inputInteger
   }
 
-  if (checkFloat === 'on') {
+  if (checkFloat === 'on' && inputFloat) {
     querySearch.float = req.query.inputFloat
   }
 
-  if (checkBoolean === 'on') {
+  if (checkBoolean === 'on' && inputBoolean) {
     querySearch.boolean = req.query.inputBoolean
   }
 
@@ -32,7 +36,6 @@ const getData = (req, res, next) => {
     querySearch.date = {$gte: req.query.startDate, $lte: req.query.endDate}
   }
 
-  console.log(querySearch)
   dataModels.find(querySearch, (err, data) => {
     if (err) return next(err);
 
