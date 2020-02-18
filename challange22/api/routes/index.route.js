@@ -9,5 +9,9 @@ router.get('/', (req, res, next) => {
 
 router.route('/api')
   .get(dataController.index)
+  .post(dataController.new)
+
+router.route('/api/:data_id')
+  .delete(dataController.delete);
 
 module.exports = router;

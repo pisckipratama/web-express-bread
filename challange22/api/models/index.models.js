@@ -11,7 +11,7 @@ const dataSchema = mongoose.Schema({
     type: Number,
   },
   date: {
-    type: Date
+    type: String
   },
   boolean: {
     type: String
