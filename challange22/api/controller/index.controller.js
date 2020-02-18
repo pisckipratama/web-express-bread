@@ -2,9 +2,38 @@ const moment = require('moment');
 const dataModels = require('../models/index.models');
 moment.locale('id');
 
-
 const getData = (req, res, next) => {
-  dataModels.find((err, data) => {
+  let {
+    checkString,
+    checkInteger,
+    checkFloat,
+    checkBoolean,
+    checkDate
+  } = req.query
+  let querySearch = {}
+
+  if (checkString === 'on') {
+    querySearch.string = req.query.inputString
+  }
+
+  if (checkInteger === 'on') {
+    querySearch.integer = req.query.inputInteger
+  }
+
+  if (checkFloat === 'on') {
+    querySearch.float = req.query.inputFloat
+  }
+
+  if (checkBoolean === 'on') {
+    querySearch.boolean = req.query.inputBoolean
+  }
+
+  if (checkDate === 'on') {
+    querySearch.date = {$gte: req.query.startDate, $lte: req.query.endDate}
+  }
+
+  console.log(querySearch)
+  dataModels.find(querySearch, (err, data) => {
     if (err) return next(err);
 
     for (let i = 0; i < data.length; i++) {
