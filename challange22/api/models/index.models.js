@@ -18,7 +18,4 @@ const dataSchema = mongoose.Schema({
   }
 })
 
-let Data = module.exports = mongoose.model('data', dataSchema);
-module.exports.get = function (callback, limit) {
-  Data.find(callback).limit(limit);
-}
+module.exports = mongoose.model('data', dataSchema);

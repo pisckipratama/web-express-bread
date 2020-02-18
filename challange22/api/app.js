@@ -26,17 +26,15 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 // config connection to mongodb
+mongoose.Promise = global.Promise;
+
 mongoose.connect('mongodb://localhost:27017/bread_mongo', {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+})
+.then(() => console.log('DB connected successfully'))
+.catch((err) => console.error(err))
 
-let db = mongoose.connection;
-if (!db) {
-  console.log('Error while connecting to database.')
-} else {
-  console.log('Database connected successfully.')
-}
 
 // use router
 app.use('/', indexRouter);
