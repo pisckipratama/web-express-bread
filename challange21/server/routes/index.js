@@ -77,7 +77,7 @@ module.exports = (pool) => {
         if (err) res.status(500).send(err);
         let result = data.rows.map(item => {
           item.string = item.string ? item.string : 'kosong'
-          item.integer = item.string ? item.string : 'kosong'
+          item.integer = item.integer ? item.integer : 'kosong'
           item.date = moment(item.date).format('LL') == 'Invalid date' ? 'kosong' : moment(item.date).format('LL');
           item.boolean = item.boolean ? true : false;
           return item
