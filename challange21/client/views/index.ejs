@@ -63,11 +63,11 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">String</th>
-          <th scope="col">Integer</th>
-          <th scope="col">Float</th>
-          <th scope="col">Date</th>
-          <th scope="col">Boolean</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Umur</th>
+          <th scope="col">Tinggi</th>
+          <th scope="col">Tanggal Join</th>
+          <th scope="col">Sudah Menikah</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -153,19 +153,23 @@
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-  </script>
+    </script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-  </script>
+    </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-  </script>
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/id.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
-    const apiUrl = "http://localhost:3000/api";
+    moment.locale('id');
+    const apiUrl = "http://localhost:3000/api/v2/record";
     $(document).ready(() => {
       loadData();
-      
+
       $('#form-control').submit((e) => {
         e.preventDefault();
         loadData();
@@ -208,22 +212,22 @@
 
     const showData = param => {
       $.ajax({
-          method: "GET",
-          url: `${apiUrl}/${param}`,
-          dataType: 'json'
-        })
+        method: "GET",
+        url: `${apiUrl}/tes/${param}`,
+        dataType: 'json'
+      })
         .done(result => {
-          let data = result.result;
+          let data = result;
           let html = '';
           data.forEach(item => {
             $('button#submit-data').attr('dataid', item.id);
             $('input#modalId').val(item.id);
             $('button#yesdelete').val(item.id);
-            $('input#modalString').val(item.string);
-            $('input#modalInteger').val(item.integer);
-            $('input#modalFloat').val(item.float);
-            $('input#modalDate').val(item.date);
-            if (item.boolean) {
+            $('input#modalString').val(item.nama);
+            $('input#modalInteger').val(item.umur);
+            $('input#modalFloat').val(item.tinggi);
+            $('input#modalDate').val(moment(item.tanggallahir).format('YYYY-MM-DD'));
+            if (item.menikah) {
               html += `<option value="false">false</option>
               <option value="true" selected>true</option>`
             } else {
@@ -238,15 +242,15 @@
     const loadData = () => {
       const data = $('#form-control').serializeArray();
       $.ajax({
-          method: 'GET',
-          url: `${apiUrl}`,
-          data: data,
-          dataType: 'json'
-        })
+        method: 'GET',
+        url: `${apiUrl}`,
+        data: data,
+        dataType: 'json'
+      })
         .done((result) => {
-          const value = result.result
+          const value = result.data.rows
           let pageNow = $('#page').val();
-          if(value.length == 0 && pageNow != '1') {
+          if (value.length == 0 && pageNow != '1') {
             $('#page').val(pageNow - 1);
             loadData();
           }
@@ -254,11 +258,11 @@
           value.forEach(item => {
             html += `<tr>
             <td>${item.id}</td>
-            <td>${item.string}</td>
-            <td>${item.integer}</td>
-            <td>${item.float}</td>
-            <td>${item.date}</td>
-            <td>${item.boolean}</td>
+            <td>${item.nama}</td>
+            <td>${item.umur}</td>
+            <td>${item.tinggi}</td>
+            <td>${moment(item.tanggallahir).format('LL')}</td>
+            <td>${item.menikah ? "Sudah" : "Belum"}</td>
             <td>
                 <button type="button" class="btn btn-success btn-edit" data-id="${item.id}" data-toggle="modal" data-target="#editModal">Edit</button>
                 <button type="button" class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
@@ -272,10 +276,10 @@
           let url = result.url;
 
           let pagination =
-            `<li class="page-item ${currentPage <=1 ? ' disabled' : ''}"><button class="page-link previous" tabindex="-1" aria-disabled="true">Previous</button></li>\n`;
+            `<li class="page-item ${currentPage <= 1 ? ' disabled' : ''}"><button class="page-link previous" tabindex="-1" aria-disabled="true">Previous</button></li>\n`;
           for (let i = 1; i <= totalPage; i++) {
             pagination +=
-              `<li class="page-item ${currentPage == i ? 'active': ''}"><button class="page-link pageNow" data-page='${i}'>${i}</button></li>\n`
+              `<li class="page-item ${currentPage == i ? 'active' : ''}"><button class="page-link pageNow" data-page='${i}'>${i}</button></li>\n`
           }
 
           pagination +=
@@ -287,10 +291,10 @@
 
     const deleteData = (id) => {
       $.ajax({
-          method: "DELETE",
-          url: `${apiUrl}/${id}`,
-          dataType: 'json'
-        })
+        method: "DELETE",
+        url: `${apiUrl}/delete/${id}`,
+        dataType: 'json'
+      })
         .done((result) => {
           loadData();
         })
@@ -298,21 +302,20 @@
 
     const saveData = (param) => {
       $.ajax({
-          method: "PUT",
-          url: `${apiUrl}/${param}`,
-          data: {
-            id: `${param}`,
-            string: $('#modalString').val(),
-            integer: $('#modalInteger').val(),
-            float: $('#modalFloat').val(),
-            date: $('#modalDate').val(),
-            boolean: $('#modalBoolean').val(),
-          },
-          dataType: 'json'
-        })
+        method: "PUT",
+        url: `${apiUrl}/update/${param}`,
+        data: {
+          id: `${param}`,
+          nama: $('#modalString').val(),
+          umur: $('#modalInteger').val(),
+          tinggi: $('#modalFloat').val(),
+          tanggallahir: $('#modalDate').val(),
+          menikah: $('#modalBoolean').val(),
+        },
+        dataType: 'json'
+      })
         .done((result) => {
           loadData();
-          $('#editModal').modal('hide')
         })
     }
   </script>

@@ -9,35 +9,36 @@
       <form id="form-add">
         <input type="hidden" id="id" value="">
         <div class="form-group row">
-          <label for="inputString" class="col-sm-2 col-form-label">String</label>
+          <label for="inputString" class="col-sm-2 col-form-label">Nama</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="string" name="string" placeholder="String">
+            <input type="text" class="form-control" id="string" name="string" placeholder="Nama">
           </div>
         </div>
         <div class="form-group row">
-          <label for="inputInteger" class="col-sm-2 col-form-label">Integer</label>
+          <label for="inputInteger" class="col-sm-2 col-form-label">Umur</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="integer" name='integer' placeholder="Integer">
+            <input type="text" class="form-control" id="integer" name='integer' placeholder="Umur">
           </div>
         </div>
         <div class="form-group row">
-          <label for="inputFloat" class="col-sm-2 col-form-label">Float</label>
+          <label for="inputFloat" class="col-sm-2 col-form-label">Tinggi Badan</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="float" name='float' placeholder="Float">
+            <input type="text" class="form-control" id="float" name='float' placeholder="Tinggi Badan">
           </div>
         </div>
         <div class="form-group row">
-          <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+          <label for="inputDate" class="col-sm-2 col-form-label">Tanggal Bergabung</label>
           <div class="col-sm-10">
-            <input type="date" class="form-control" id="date" name="date" placeholder="End Date">
+            <input type="date" class="form-control" id="date" name="date">
           </div>
         </div>
         <div class="form-group row">
-          <label for="inputBoolean" class="col-sm-2 col-form-label">Boolean</label>
+          <label for="inputBoolean" class="col-sm-2 col-form-label">Sudah Menikah</label>
           <div class="col-sm-10">
             <select class="custom-select" id="boolean" name="boolean">
-              <option value="false">false</option>
-              <option value="true">true</option>
+              <option disabled selected>Pilih Salah Satu</option>
+              <option value="false">Belum</option>
+              <option value="true">Sudah</option>
             </select>
           </div>
         </div>
@@ -59,25 +60,23 @@
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="text/javascript">
-    const apiUrl = "http://localhost:3000/api";
+    const apiUrl = "http://localhost:3000/api/v2/record/add";
     $(document).ready(() => {
       $('#form-add').submit((e) => {
         e.preventDefault();
         addData();
       });
-      $('table tbody').on('click', '.btn-delete', (event) => {
-        deleteData($(event.currentTarget).attr('data-id'))
-      })
+
       const addData = () => {
         $.ajax({
             method: "POST",
             url: `${apiUrl}`,
             data: {
-              string: $('#string').val(),
-              integer: $('#integer').val(),
-              float: $('#float').val(),
-              date: $('#date').val(),
-              boolean: $('#boolean').val(),
+              nama: $('#string').val(),
+              umur: $('#integer').val(),
+              tinggi: $('#float').val(),
+              tanggallahir: $('#date').val(),
+              menikah: $('#boolean').val(),
             },
             dataType: 'json'
           })
