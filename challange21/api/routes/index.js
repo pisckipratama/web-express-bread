@@ -30,4 +30,31 @@ router.post('/add', (req, res, next) => {
   })).catch(err => res.send(err));
 })
 
+router.put('/update/:id', (req, res, next) => {
+  const { nama, umur, tinggi, tanggallahir, menikah } = req.body;
+  const { id } = req.params
+  models.Record.update({
+    nama,
+    tinggi,
+    umur,
+    tanggallahir,
+    menikah
+  }, {
+    where: {
+      id
+    }
+  }).then(result => res.json(result))
+    .catch(err => res.send(err))
+})
+
+router.delete('/delete/:id', (req, res, next) => {
+  const { id } = req.params
+  models.Record.destroy({
+    where: {
+      id
+    }
+  }).then(result => res.json(result))
+    .catch(err => res.send(err))
+})
+
 module.exports = router;
