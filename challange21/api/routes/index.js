@@ -60,14 +60,12 @@ router.get('/', (req, res, next) => {
     .catch(err => res.send(err))
 });
 
-router.get('/tes/:nama', (req, res, next) => {
-  const { nama } = req.params
+router.get('/tes/:id', (req, res, next) => {
+  const { id } = req.params
 
   models.Record.findAll({
     where: {
-      nama: {
-        [op.iLike]: `%${nama}%`
-      }
+      id
     }
   }).then(result => res.json(result))
     .catch(err => res.send(err))
