@@ -6,13 +6,29 @@ moment.locale('id');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  models.Record.findAll({}).then(data => {
+  const limit = 3;
+  const currentPage = parseInt(req.query.page) || 1;
+  const offset = parseInt(currentPage - 1) * limit;
+
+  let filter = {}
+
+  models.Record.findAndCountAll({
+    limit,
+    offset
+  }).then(result => {
+    const totalPage = Math.ceil(result.count / limit);
+    const url = req.url === '/' ? '/?page=1' : req.url;
     res.json({
-      status: 'ok',
-      message: 'success retrive data',
-      data
+      result,
+      totalPage,
+      url,
+      offset,
+      limit,
+      currentPage,
+      query: req.query
     })
   })
+    .catch(err => res.send(err))
 });
 
 router.post('/add', (req, res, next) => {
