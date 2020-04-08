@@ -1,0 +1,20 @@
+{
+  "name": "dockerize-nodejs",
+  "version": "1.0.0",
+  "description": "Learn docker with nodejs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "docker",
+    "restapi"
+  ],
+  "author": "Piscki Pratama <pisckipratama@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
