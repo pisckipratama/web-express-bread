@@ -6,7 +6,7 @@ var db = new arangojs.Database();
 db.useBasicAuth('root', 'nopassword');
 const collection = db.collection("User");
 
-/* GET users listing. */
+/* GET /users - get all users */
 router.get('/', async (req, res, next) => {
 
   try {
@@ -18,5 +18,17 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+/* GET /users/:key - get one user */
+router.get('/:key', async (req, res, next) => {
+  const { key } = req.params;
+
+  try {
+    const doc = await collection.firstExample({ _key: key });
+    res.status(200).json(doc);
+  } catch (err) {
+    console.error(err.stack);
+    res.json(err.stack);
+  }
+});
 
 module.exports = router;
