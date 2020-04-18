@@ -11,10 +11,10 @@ router.get('/', async (req, res, next) => {
 
   try {
     const doc = await collection.all();
-    res.status(200).json(doc._result);
+    return res.status(200).json(doc._result);
   } catch (err) {
     console.error(err.stack);
-    res.json(err.stack);
+    return res.json(err.stack);
   }
 });
 
@@ -23,11 +23,11 @@ router.get('/:key', async (req, res, next) => {
   const { key } = req.params;
 
   try {
-    const doc = await collection.firstExample({ _key: key });
-    res.status(200).json(doc);
+    const doc = await collection.byExample({ _key: key });
+    return res.status(200).json(doc._result);
   } catch (err) {
     console.error(err.stack);
-    res.json(err.stack);
+    return res.json(err.stack);
   }
 });
 
@@ -37,10 +37,10 @@ router.post('/', async (req, res, next) => {
 
   try {
     const add = await collection.save({ username, email });
-    res.status(201).json(add);
+    return res.status(201).json(add);
   } catch (err) {
     console.error(err.stack);
-    res.json(err.stack);
+    return res.json(err.stack);
   }
 });
 
@@ -50,10 +50,10 @@ router.put('/:key', async (req, res, next) => {
 
   try {
     const update = await collection.update(key, req.body);
-    return res.json(201).json(update);
+    return res.status(201).json(update);
   } catch (err) {
     console.error(err.stack);
-    res.json(err.stack);
+    return res.json(err.stack);
   }
 });
 
