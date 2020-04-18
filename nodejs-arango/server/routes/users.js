@@ -50,11 +50,23 @@ router.put('/:key', async (req, res, next) => {
 
   try {
     const update = await collection.update(key, req.body);
-    res.json(201).json(update);
+    return res.json(201).json(update);
   } catch (err) {
     console.error(err.stack);
     res.json(err.stack);
   }
-})
+});
+
+/* DELETE /users/:key - delete user */
+router.delete('/:key', async (req, res, next) => {
+  const { key } = req.params;
+  try {
+    const deleteUser = await collection.remove({ _key: key });
+    return res.status(204).json(deleteUser);
+  } catch (err) {
+    console.error(err.stack);
+    return res.json(err.stack);
+  }
+});
 
 module.exports = router;
