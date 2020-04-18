@@ -44,4 +44,17 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+/* PUT /users/:key - update user */
+router.put('/:key', async (req, res, next) => {
+  const { key } = req.params;
+
+  try {
+    const update = await collection.update(key, req.body);
+    res.json(201).json(update);
+  } catch (err) {
+    console.error(err.stack);
+    res.json(err.stack);
+  }
+})
+
 module.exports = router;
