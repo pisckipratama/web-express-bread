@@ -31,4 +31,17 @@ router.get('/:key', async (req, res, next) => {
   }
 });
 
+/* POST /users - create user */
+router.post('/', async (req, res, next) => {
+  const { username, email } = req.body;
+
+  try {
+    const add = await collection.save({ username, email });
+    res.status(201).json(add);
+  } catch (err) {
+    console.error(err.stack);
+    res.json(err.stack);
+  }
+});
+
 module.exports = router;
